@@ -18,7 +18,7 @@ public class Animal : MonoBehaviour
     public static Animal RandomAnimal () {
         Animal animal = new Animal();
         System.Array values = System.Enum.GetValues(typeof(AnimalEnum));
-        AnimalEnum animalType = values.GetValue(Random.Range(0, values.Length));
+        AnimalEnum animalType = (AnimalEnum)values.GetValue(Random.Range(0, values.Length));
         animal.AnimalType = animalType;
 
         animal.stamina = Random.Range(0f, 100f);
@@ -27,5 +27,6 @@ public class Animal : MonoBehaviour
         animal.swimming = Random.Range(0f, 100f);
         animal.climbing = Random.Range(0f, 100f);
         animal.style = Random.Range(0f, 100f);
+        return animal;
     }
 }
