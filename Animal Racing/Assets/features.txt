@@ -1,0 +1,94 @@
+Game Loop
+- Hatch an egg
+- Train your animal
+- Customize your animal
+- Race your animal
+- Get rewards
+
+Features
+- Animals
+	- Types
+		- Chicken
+		- Pig
+		- Cow
+		- Sheep
+		- Fish
+	- Can name them whatever you want (memes incoming)
+- Eggs
+	- Type of animal usually unknown
+	- Rare/Epic/Legendary system
+	- Silver eggs will give epic or legendary
+	- Golden eggs will give legendary
+- Breeding
+	- Can breed 2 different types of animals
+		- Takes a certain amount of time
+		- Both animals are out of commission until the egg appears
+		- 50% chance egg will be either of the 2 animals
+		- Small chance of gaining any of the positive or negative traits of the parents
+		- Small chance of gaining a new trait entirely
+- Personalities
+	- Appear natively when you hatch an egg
+	- Legendaries are guaranteed to not have negative traits and at least 2 positive
+	- Epics are guaranteed to have no more than one negative trait, and at least 3 positive
+	- Positive traits may be added and negative traits may be removed randomly through training
+	- Types
+		- Functional
+			- Positive
+				- Optimistic
+					- Gains a small speed boost when behind in a race
+				- Persistent
+					- Will go a little bit longer when energy reaches 0
+				- Precise
+					- 1.2x navigation bonus
+				- Charming
+					- 1.2x style
+				- Excitable
+					- 1.2x bonus speed from cheering
+			- Negative
+				- Arrogant
+					- Show boats and slows down if they have a substantial lead
+				- Thoughtless
+					- Immune to cheering
+				- Lazy
+					- 1.2x stamina loss
+				- Finicky
+					- Move speed fluctuates sporadically throughout races
+- Stats
+	- Stamina
+		- Energy for a race. When it reaches 0, your animal falls over in exhaustion
+	- Navigation
+		- Directional consistency. The higher it is, the less they deviate less and right
+	- Running
+	- Flying
+	- Swimming
+	- Climbing
+	- Style
+		- Bonuses for winning
+- Training
+	- For each of the stats
+	- Types
+		- Active minigame
+		- Idle training grounds
+- Monetization
+	- I am scum
+	- Ads
+		- After every lost race
+		- Option to speed up breeding
+		- 
+	- Microtransactions
+		- $2.99 to remove ads
+		- Potentially $0.99 for buying new areas or something?
+		- Really want to avoid buying eggs. That would be getting into scummy Tim Train-esque territory
+		- Honestly yeah fuck it. Tim Train can SMD.
+Races
+	- Daily challengers
+		- 1v1
+	- Tournaments
+		- Free for all
+		- 4 or 8 total
+		- Have to enter 3 different animals for 3 different races
+Betting
+	- Can bet in tournaments you don’t participate in and wager in-game currency (not purchasable with real life money)
+	- Get to see the competing animals and their stats before-hand
+
+	
