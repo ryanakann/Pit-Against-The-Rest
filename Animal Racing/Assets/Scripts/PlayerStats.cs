@@ -1,10 +1,57 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public struct PlayerStats
+public class PlayerStats : MonoBehaviour
 {
+    public string Name
+    {
+        get => _name;
+        set => _name = value;
+    }
+    
+    public float Stamina
+    {
+        get => _stamina;
+        set => _stamina = value;
+    }
+
+    public float Style
+    {
+        get => _style;
+        set => _style = value;
+    }
+
+    public float Constitution
+    {
+        get => _constitution;
+        set => _constitution = value;
+    }
+
+    public float Speed
+    {
+        get => _speed;
+        set => _speed = value;
+    }
+
+    public float Acceleration
+    {
+        get => _acceleration;
+        set => _acceleration = value;
+    }
+
+    public float Poise
+    {
+        get => _poise;
+        set => _poise = value;
+    }
+
+    public Color Color
+    {
+        get => _color;
+        set => _color = value;
+    }
+    
     private string _name;
     private float _stamina; //Increases max stamina
     private float _style; //Gain more income for winning
@@ -13,40 +60,36 @@ public struct PlayerStats
     private float _acceleration; //Increases speedup on race start and after falling over
     private float _poise; //Decreases chance of ragdolling
 
-    public void SetName(string name) => _name = name;
-    public string GetName () => _name;
+    private Color _color;
 
-    public PlayerStats(string name, float stamina, float style, float constitution, float speed, float acceleration, float poise)
+    private void Awake()
     {
-        _name = name;
-        _stamina = stamina;
-        _style = style;
-        _constitution = constitution;
-        _speed = speed;
-        _acceleration = acceleration;
-        _poise = poise;
+        // RandomizePlayerStats();
     }
 
-    public PlayerStats(string name)
+    public void CopyPlayerStats(PlayerStats stats)
     {
-        _name = name;
-        _stamina = Random.Range(0, 100);
-        _style = Random.Range(0, 100);
-        _constitution = Random.Range(0, 100);
-        _speed = Random.Range(0, 100);
-        _acceleration = Random.Range(0, 100);
-        _poise = Random.Range(0, 100);
+        Name = stats.Name;
+        Stamina = stats.Stamina;
+        Style = stats.Style;
+        Constitution = stats.Constitution;
+        Speed = stats.Speed;
+        Acceleration = stats.Acceleration;
+        Poise = stats.Poise;
+        Color = stats.Color;
     }
 
-    public static PlayerStats Breed(PlayerStats p1, PlayerStats p2)
+    public void RandomizePlayerStats()
     {
-        PlayerStats p3 = new PlayerStats(PlayerName.GetRandomName());
-        p3._stamina = (p1._stamina + p2._stamina + p3._stamina) / 3f;
-        p3._style = (p1._style + p2._style + p3._style) / 3f;
-        p3._constitution = (p1._constitution + p2._constitution + p3._constitution) / 3f;
-        p3._speed = (p1._speed + p2._speed + p3._speed) / 3f;
-        p3._acceleration = (p1._acceleration + p2._acceleration + p3._acceleration) / 3f;
-        p3._poise = (p1._poise + p2._poise + p3._poise) / 3f;
-        return p3;
+        Name = PlayerName.GetRandomName();
+        gameObject.name = Name;
+        Stamina = Random.Range(0, 100);
+        Style = Random.Range(0, 100);
+        Constitution = Random.Range(0, 100);
+        Speed = Random.Range(0, 100);
+        Acceleration = Random.Range(0, 100);
+        Poise = Random.Range(0, 100);
+        Color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
     }
+    
 }

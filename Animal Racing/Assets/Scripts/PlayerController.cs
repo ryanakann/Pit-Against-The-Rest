@@ -5,23 +5,23 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
 
-[RequireComponent(typeof(ThirdPersonCharacter), typeof(NavMeshAgent))]
+[RequireComponent(
+    typeof(ThirdPersonCharacter), 
+    typeof(NavMeshAgent), 
+    typeof(PlayerStats)
+    )]
 public class PlayerController : MonoBehaviour
 {
-    private PlayerStats _stats;
-    
+    [SerializeField] private PlayerStats stats;
     private Camera _camera;
-    private NavMeshAgent _agent;
+    [SerializeField] private NavMeshAgent agent;
+    [SerializeField] private SkinnedMeshRenderer meshRenderer;
+    [SerializeField] private ThirdPersonCharacter character;
 
-    private ThirdPersonCharacter _character;
-    
     void Start()
     {
         _camera = Camera.main;
-        _agent = GetComponent<NavMeshAgent>();
-        _character = GetComponent<ThirdPersonCharacter>();
-
-        _agent.updateRotation = false;
+        agent.updateRotation = false;
     }
 
     void Update()
@@ -32,11 +32,17 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(ray, out var hit))
             {
-                _agent.SetDestination(hit.point);
+                agent.SetDestination(hit.point);
             }
         }
 
-        _character.Move(_agent.remainingDistance > _agent.stoppingDistance ? _agent.desiredVelocity : Vector3.zero,
+        character.Move(agent.remainingDistance > agent.stoppingDistance ? agent.desiredVelocity : Vector3.zero,
             false, false);
+    }
+
+    public void UpdatePropertiesFromStats()
+    {
+        gameObject.name = stats.Name;
+        meshRenderer.material.color = stats.Color;
     }
 }

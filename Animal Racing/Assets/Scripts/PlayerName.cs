@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public static class PlayerName
 {
-    private static readonly string[] Names = new[]
-    {
+    private static readonly string[] Names = {
         "Abe",
         "Albert",
         "Alexander",
