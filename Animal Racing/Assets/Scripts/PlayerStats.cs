@@ -90,6 +90,7 @@ public class PlayerStats : MonoBehaviour
         Acceleration = stats.Acceleration;
         Poise = stats.Poise;
         Color = stats.Color;
+        UpdateStatsUI();
     }
 
     public void RandomizePlayerStats()

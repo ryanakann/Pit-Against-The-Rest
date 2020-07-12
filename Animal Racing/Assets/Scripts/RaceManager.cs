@@ -36,8 +36,8 @@ public class RaceManager : MonoBehaviour
 
     public void RegisterRacer(GameObject racer)
     {
+        racer.transform.position = startingPositions[racers.Count];
         racers.Add(racer.GetComponent<PlayerController>());
-        // racer.transform.position = Vec
     }
 
     public void Race(GameObject player)
@@ -47,42 +47,55 @@ public class RaceManager : MonoBehaviour
 
     private IEnumerator RaceCR(GameObject player)
     {
-        GameObject playerRacer = Instantiate(player.gameObject);
-        player.transform.Find("StatsUI").gameObject.SetActive(false);
-        player.transform.Find("PointerUI").gameObject.SetActive(true);
-        RegisterRacer(player);
+        print("Ready...");
+        OnRaceReady?.Invoke();
+        GameObject playerRacer = broodmother.GenerateRandomPlayer();
+        playerRacer.GetComponent<PlayerStats>().CopyPlayerStats(player.GetComponent<PlayerStats>());
+        playerRacer.GetComponent<PlayerController>().UpdatePropertiesFromStats();
+        playerRacer.transform.Find("StatsUI").gameObject.SetActive(false);
+        playerRacer.transform.Find("PointerUI").gameObject.SetActive(true);
+        RegisterRacer(playerRacer);
         for (int i = 1; i < 8; i++)
         {
-            RegisterRacer(broodmother.GenerateRandomPlayer());
+            GameObject npc = broodmother.GenerateRandomPlayer();
+            npc.transform.Find("StatsUI").gameObject.SetActive(false);
+            npc.transform.Find("PointerUI").gameObject.SetActive(false);
+            npc.GetComponent<PlayerController>().SetActive(false);
+            RegisterRacer(npc);
         }
-        OnRaceReady?.Invoke();
+
         yield return new WaitForSeconds(3f);
         StartRace();
-        while (!player.GetComponent<PlayerController>().finished)
+        while (playerRacer.transform.position.x < 165f)
         {
-            
+            yield return new WaitForEndOfFrame();
         }
+        FinishRace();
     }
 
     private void StartRace()
     {
+        print("Go!");
         OnRaceStart?.Invoke();
         Transform side1 = finish.GetChild(0);
         Transform side2 = finish.GetChild(1);
         
         foreach (PlayerController racer in racers)
         {
+            racer.SetActive(true);
             racer.RandomDestination(side1, side2);
         }
     }
 
-    private void FinishRace()
+    public void FinishRace()
     {
+        print("Finished!");
         OnRaceFinish?.Invoke();
         foreach (PlayerController racer in racers)
         {
             racer.finished = true;
-            Destroy(racer.gameObject, 5f);
+            Destroy(racer.gameObject, 2f * Time.deltaTime);
         }
+        racers = new List<PlayerController>();
     }
 }

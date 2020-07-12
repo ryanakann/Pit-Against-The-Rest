@@ -101,6 +101,7 @@ public class PlayerController : MonoBehaviour
                 {
                     SetRagdolling(true);
                     yield return new WaitForSeconds(2f);
+                    SetRagdolling(false);
                 }
             }
         }
@@ -109,21 +110,27 @@ public class PlayerController : MonoBehaviour
 
     public void RandomDestination(Transform side1, Transform side2)
     {
+        finished = false;
         StartCoroutine(RandomDestinationCR(side1, side2));
         RandomRagdoll();
     }
 
     private IEnumerator RandomDestinationCR(Transform side1, Transform side2)
     {
-        while (!finished)
+        Vector3 target = transform.position;
+        while (transform.position.x < 165f)
         {
-            Vector3 point = Vector3.Lerp(side1.position, side2.position, Random.Range(0.1f, 0.9f));
+            Vector3 point = Vector3.Lerp(side1.position, side2.position, Random.Range(0.1f, 0.9f)) + Vector3.right * 5f;
             Ray ray = new Ray(point + Vector3.up * 10f, Vector3.down);
             if (Physics.Raycast(ray, out var hit))
             {
-                agent.SetDestination(hit.point);
+                target = hit.point;
+                agent.SetDestination(target);
             }
+            Debug.DrawLine(transform.position, target, Color.cyan);
             yield return new WaitForSeconds(Mathf.Lerp(1f, 5f, Random.value * (1+stats.Constitution) / 101f));
         }
+
+        finished = true;
     }
 }
