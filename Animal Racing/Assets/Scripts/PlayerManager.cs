@@ -2,19 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private float spacing = 3f;
-    [SerializeField] private Tween tween;
     [SerializeField] private Broodmother broodmother;
-
+    
     private HashSet<GameObject> _players;
     private int _activePlayerIndex;
     private int _activePlayerCount;
 
-    private GameObject _parentSlot1;
-    private GameObject _parentSlot2;
+    [SerializeField] private TMP_Text parentSlot1Text;
+    [SerializeField] private TMP_Text parentSlot2Text;
+    [SerializeField] private GameObject _parentSlot1;
+    [SerializeField] private GameObject _parentSlot2;
 
     private Vector3 _initialPosition;
     private bool _transitioning;
@@ -75,6 +77,7 @@ public class PlayerManager : MonoBehaviour
     public void DecrementActivePlayer()
     {
         _activePlayerIndex = (_activePlayerIndex - 1) % _activePlayerCount;
+        if (_activePlayerIndex < 0f) _activePlayerIndex = _activePlayerCount - 1;
         MoveToActivePlayer();
     }
 
@@ -114,33 +117,27 @@ public class PlayerManager : MonoBehaviour
         MoveToActivePlayer();
     }
 
-    private bool SetParentSlot1(GameObject player)
+    public void SetParentSlot1()
     {
-        if (_parentSlot1 != null) return false;
-        _parentSlot1 = player;
-        return true;
+        if (_parentSlot1 == GetActivePlayer() || _parentSlot2 == GetActivePlayer()) return;
+        _parentSlot1 = GetActivePlayer();
+        parentSlot1Text.text = _parentSlot1.GetComponent<PlayerStats>().Name;
+        parentSlot1Text.color = _parentSlot1.GetComponent<PlayerStats>().Color;
     }
 
-    private bool SetParentSlot2(GameObject player)
+    public void SetParentSlot2()
     {
-        if (_parentSlot2 != null) return false;
-        _parentSlot2 = player;
-        return true;
+        if (_parentSlot1 == GetActivePlayer() || _parentSlot2 == GetActivePlayer()) return;
+        _parentSlot2 = GetActivePlayer();
+        parentSlot2Text.text = _parentSlot2.GetComponent<PlayerStats>().Name;
+        parentSlot2Text.color = _parentSlot2.GetComponent<PlayerStats>().Color;
     }
 
-    public bool AddParentToSlots(GameObject player)
+    public void Breed()
     {
-        if (_parentSlot1 == null)
-        {
-            SetParentSlot1(player);
-            return true;
-        }
-        if (_parentSlot2 == null)
-        {
-            SetParentSlot2(player);
-            return true;
-        }
-        return false;
+        if (_parentSlot1 == null || _parentSlot2 == null) return;
+        GameObject child = broodmother.Breed(_parentSlot1.GetComponent<PlayerStats>(), _parentSlot2.GetComponent<PlayerStats>());
+        RegisterPlayer(child);
     }
 
     public void ClearParentSlot1()

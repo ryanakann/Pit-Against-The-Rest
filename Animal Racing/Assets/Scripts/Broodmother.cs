@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
 public class Broodmother : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
-    private void Update()
-    {
-        
-    }
-
+    
+    
     public GameObject GenerateStartingPlayer()
     {
         GameObject player = GenerateRandomPlayer();
@@ -35,18 +28,35 @@ public class Broodmother : MonoBehaviour
         return player;
     }
 
-    public void Breed(PlayerStats playerStats1, PlayerStats playerStats2)
+    public GameObject Breed(PlayerStats playerStats1, PlayerStats playerStats2)
     {
         GameObject player = Instantiate(playerPrefab, Vector3.right * 5f, Quaternion.identity);
         PlayerStats playerStats = player.GetComponent<PlayerStats>();
         playerStats.RandomizePlayerStats();
-        playerStats.Stamina = (playerStats1.Stamina + playerStats2.Stamina + playerStats.Stamina) / 3f;
-        playerStats.Style = (playerStats1.Style + playerStats2.Style + playerStats.Style) / 3f;
-        playerStats.Constitution = (playerStats1.Constitution + playerStats2.Constitution + playerStats.Constitution) / 3f;
-        playerStats.Speed = (playerStats1.Speed + playerStats2.Speed + playerStats.Speed) / 3f;
-        playerStats.Acceleration = (playerStats1.Acceleration + playerStats2.Acceleration + playerStats.Acceleration) / 3f;
-        playerStats.Poise = (playerStats1.Poise + playerStats2.Poise + playerStats.Poise) / 3f;
-        playerStats.Color = ((Vector4)playerStats1.Color + (Vector4)playerStats2.Color + (Vector4)playerStats.Color) / 3f;
+        playerStats.Stamina = 0.4f * playerStats1.Stamina + 0.4f * playerStats2.Stamina + 0.2f * playerStats.Stamina;
+        playerStats.Style = 0.4f * playerStats1.Style + 0.4f * playerStats2.Style + 0.2f * playerStats.Style;
+        playerStats.Constitution = 0.4f * playerStats1.Constitution + 0.4f * playerStats2.Constitution + 0.2f * playerStats.Constitution;
+        playerStats.Speed = 0.4f * playerStats1.Speed + 0.4f * playerStats2.Speed + 0.2f * playerStats.Speed;
+        playerStats.Acceleration = 0.4f * playerStats1.Acceleration + 0.4f * playerStats2.Acceleration + 0.2f * playerStats.Acceleration;
+        playerStats.Poise = 0.4f * playerStats1.Poise + 0.4f * playerStats2.Poise + 0.2f * playerStats.Poise;
+
+        Color color;
+        float val = Random.value;
+        if (val < 1 / 3f)
+        {
+            color = playerStats1.Color;
+        }
+        else if (val < 2 / 3f)
+        {
+            color = playerStats2.Color;
+        }
+        else
+        {
+            color = playerStats.Color;
+        }
+        playerStats.Color = color;
+        
         player.GetComponent<PlayerController>().UpdatePropertiesFromStats();
+        return player;
     }
 }
