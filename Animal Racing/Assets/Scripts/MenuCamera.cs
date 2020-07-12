@@ -8,7 +8,7 @@ public class MenuCamera : MonoBehaviour
 {
     [SerializeField] private CinemachineMixingCamera mixingCamera;
 
-    private void Awake()
+    private void Start()
     {
         SetCamera(0);
     }

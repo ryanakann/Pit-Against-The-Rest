@@ -8,6 +8,7 @@ public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private float spacing = 3f;
     [SerializeField] private Broodmother broodmother;
+    [SerializeField] private RaceManager raceManager;
     
     private HashSet<GameObject> _players;
     private int _activePlayerIndex;
@@ -148,5 +149,10 @@ public class PlayerManager : MonoBehaviour
     public void ClearParentSlot2()
     {
         _parentSlot2 = null;
+    }
+
+    public void WinTheRace()
+    {
+        raceManager.Race(GetActivePlayer());
     }
 }

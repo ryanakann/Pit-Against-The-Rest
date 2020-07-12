@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEditor;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Events;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 [RequireComponent(
@@ -26,6 +21,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private SkinnedMeshRenderer meshRenderer;
     [SerializeField] private Ragdoll ragdoll;
+    public bool finished;
 
     void Start()
     {
@@ -36,17 +32,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (!isEnabled) return;
+        finished = agent.remainingDistance < agent.stoppingDistance;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SetRagdolling(!isRagdolling);
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit))
-            {
-                agent.SetDestination(hit.point);
-            }
         }
 
         if (!agent.enabled || !animator.enabled) return;
@@ -93,6 +82,48 @@ public class PlayerController : MonoBehaviour
             agent.enabled = true;
             animator.enabled = true;
             rb.isKinematic = false;
+        }
+    }
+
+    public void RandomRagdoll()
+    {
+        StartCoroutine(RandomRagdollCR());
+    }
+
+    private IEnumerator RandomRagdollCR()
+    {
+        while (!finished)
+        {
+            yield return new WaitForSeconds(Random.Range(3f, 10f));
+            if (!finished)
+            {
+                if (Random.value > stats.Constitution / 100f)
+                {
+                    SetRagdolling(true);
+                    yield return new WaitForSeconds(2f);
+                }
+            }
+        }
+    }
+    
+
+    public void RandomDestination(Transform side1, Transform side2)
+    {
+        StartCoroutine(RandomDestinationCR(side1, side2));
+        RandomRagdoll();
+    }
+
+    private IEnumerator RandomDestinationCR(Transform side1, Transform side2)
+    {
+        while (!finished)
+        {
+            Vector3 point = Vector3.Lerp(side1.position, side2.position, Random.Range(0.1f, 0.9f));
+            Ray ray = new Ray(point + Vector3.up * 10f, Vector3.down);
+            if (Physics.Raycast(ray, out var hit))
+            {
+                agent.SetDestination(hit.point);
+            }
+            yield return new WaitForSeconds(Mathf.Lerp(1f, 5f, Random.value * (1+stats.Constitution) / 101f));
         }
     }
 }

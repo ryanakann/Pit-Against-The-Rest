@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RaceManager : MonoBehaviour
+public class LookAtCamera : MonoBehaviour
 {
+    private Camera _camera;
     // Start is called before the first frame update
     void Start()
     {
-        
+        _camera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        transform.forward = (transform.position - _camera.transform.position).normalized;
     }
 }
