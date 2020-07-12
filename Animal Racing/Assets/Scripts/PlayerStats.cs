@@ -1,9 +1,13 @@
 ﻿using System;
 using UnityEngine;
+using TMPro;
+using UnityEngine.Assertions.Must;
 using Random = UnityEngine.Random;
 
 public class PlayerStats : MonoBehaviour
 {
+    [SerializeField] private bool randomizeOnAwake;
+    
     public string Name
     {
         get => _name;
@@ -61,10 +65,19 @@ public class PlayerStats : MonoBehaviour
     private float _poise; //Decreases chance of ragdolling
 
     private Color _color;
+    
+    [Header("UI")] 
+    [SerializeField] private TMP_Text nameText;
+    [SerializeField] private TMP_Text staminaText;
+    [SerializeField] private TMP_Text styleText;
+    [SerializeField] private TMP_Text constitutionText;
+    [SerializeField] private TMP_Text speedText;
+    [SerializeField] private TMP_Text accelerationText;
+    [SerializeField] private TMP_Text poiseText;
 
     private void Awake()
     {
-        // RandomizePlayerStats();
+        if (randomizeOnAwake) RandomizePlayerStats();
     }
 
     public void CopyPlayerStats(PlayerStats stats)
@@ -90,6 +103,17 @@ public class PlayerStats : MonoBehaviour
         Acceleration = Random.Range(0, 100);
         Poise = Random.Range(0, 100);
         Color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+    }
+
+    public void UpdateStatsUI()
+    {
+        nameText.text = Name;
+        staminaText.text = Mathf.FloorToInt(Stamina).ToString();
+        styleText.text = Mathf.FloorToInt(Style).ToString();
+        constitutionText.text = Mathf.FloorToInt(Constitution).ToString();
+        speedText.text = Mathf.FloorToInt(Speed).ToString();
+        accelerationText.text = Mathf.FloorToInt(Acceleration).ToString();
+        // poiseText.text = Mathf.FloorToInt(Poise).ToString();
     }
     
 }

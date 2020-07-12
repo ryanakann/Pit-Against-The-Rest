@@ -7,15 +7,32 @@ using UnityEngine.Serialization;
 public class Broodmother : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private PlayerStats playerStats1;
-    [SerializeField] private PlayerStats playerStats2;
-
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Breed(playerStats1, playerStats2);
-        }
+        
+    }
+
+    public GameObject GenerateStartingPlayer()
+    {
+        GameObject player = GenerateRandomPlayer();
+        PlayerStats playerStats = player.GetComponent<PlayerStats>();
+        playerStats.Acceleration /= 10f;
+        playerStats.Constitution /= 10f;
+        playerStats.Poise /= 10f;
+        playerStats.Speed /= 10f;
+        playerStats.Stamina /= 10f;
+        playerStats.Style /= 10f;
+        player.GetComponent<PlayerController>().UpdatePropertiesFromStats();
+        return player;
+    }
+
+    public GameObject GenerateRandomPlayer()
+    {
+        GameObject player = Instantiate(playerPrefab);
+        PlayerStats playerStats = player.GetComponent<PlayerStats>();
+        playerStats.RandomizePlayerStats();
+        player.GetComponent<PlayerController>().UpdatePropertiesFromStats();
+        return player;
     }
 
     public void Breed(PlayerStats playerStats1, PlayerStats playerStats2)
